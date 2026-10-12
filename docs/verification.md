@@ -9,7 +9,9 @@
 - Windows命令：`py -3.13`可用；README中的PowerShell UTF-8聊天请求返回预期中文模拟回复，使用临时端口8766验证后停止服务。
 - 安装包角色资料：构建并安装wheel，在不加载源码可编辑安装的隔离Python进程中成功读取露米的JSON配置。
 - 源码与文档：Python语法解析通过，本地Markdown文件链接检查通过。
-- GitHub Actions：待发布后确认。
+- GitHub Actions：首次发布提交 `c1be261` 的自动测试成功通过：[运行记录](https://github.com/zwsss152/ai-character-chat/actions/runs/38249898757)。
+- 远端发布：公开仓库 `zwsss152/ai-character-chat` 已创建，19个文件与本地骨架内容一致，已同步本地main。
+- 发布方式：本次通过已连接的GitHub工具上传。本机现有Git凭据对新仓库的推送返回403，后续直接使用 `git push` 前需配置相应访问权限。
 
 本地测试出现Starlette针对httpx测试客户端的弃用提示；当前测试全部通过，后续更新测试客户端时需复核兼容性。沙箱内pytest缓存写入曾受限，不影响接口结果。
 
