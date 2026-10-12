@@ -1,0 +1,15 @@
+.venv/
+.local-tmp/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+pytest-cache-files-*/
+*.egg-info/
+build/
+dist/
+.env
+.env.*
+!.env.example
+local_data/
+experiments/runs/
+.DS_Store
