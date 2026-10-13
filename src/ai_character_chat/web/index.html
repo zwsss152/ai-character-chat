@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="原创角色对话项目，当前使用离线模拟回复。">
+  <title>星间档案 · Character Chat</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">✧</span><span>星间档案<small>CHARACTER CHAT</small></span></a>
+      <div class="section-label">对话角色 <span id="character-count">—</span></div>
+      <div id="characters" class="character-list" aria-label="选择角色"></div>
+      <button id="reload" class="quiet-button" type="button">重新加载角色</button>
+      <div class="sidebar-footer"><span class="mode-dot" aria-hidden="true"></span><span id="mode">正在检查服务</span><a href="/docs" target="_blank" rel="noopener">API ↗</a></div>
+    </aside>
+    <main class="main">
+      <header class="chat-header"><div><div class="eyebrow">空中图书馆 / 对话室</div><h1 id="character-name">选择一位角色</h1></div><button id="clear" class="quiet-button" type="button" disabled>清空对话</button></header>
+      <section class="character-intro" aria-label="角色资料"><span class="intro-symbol" aria-hidden="true">✦</span><p id="persona">角色资料加载后会显示在这里。</p></section>
+      <div id="messages" class="messages" role="log" aria-label="对话记录" aria-live="polite" aria-relevant="additions"></div>
+      <div class="composer-area">
+        <p id="status" class="status" role="status">正在加载角色…</p>
+        <form id="chat-form" class="composer">
+          <label class="sr-only" for="message">发送消息</label>
+          <textarea id="message" name="message" rows="2" placeholder="从一句你好开始…" disabled></textarea>
+          <div class="composer-bottom"><span id="counter">0 / 2000</span><button id="send" type="submit" disabled>发送 <span aria-hidden="true">↗</span></button></div>
+        </form>
+        <p class="boundary">当前回复为离线模拟。对话只保留在本页，不会作为模型上下文；刷新后清空。</p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

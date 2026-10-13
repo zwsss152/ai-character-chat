@@ -1,6 +1,10 @@
 """HTTP entry point. Start here when tracing a request."""
 
+from importlib.resources import files
+
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from .characters import Character, load_characters
 from .chat import ChatRequest, ChatResponse, ChatService, UnknownCharacterError
@@ -13,9 +17,15 @@ def create_app(provider: ChatProvider | None = None) -> FastAPI:
     service = ChatService(characters, selected_provider)
     application = FastAPI(
         title="AI Character Chat — Learning Scaffold",
-        version="0.1.0",
+        version="0.2.0",
         description="Offline mock replies only. Real model integration is a later learning task.",
     )
+    web_directory = files("ai_character_chat").joinpath("web")
+    application.mount("/assets", StaticFiles(directory=str(web_directory)), name="assets")
+
+    @application.get("/", include_in_schema=False)
+    def web_client() -> FileResponse:
+        return FileResponse(str(web_directory.joinpath("index.html")))
 
     @application.get("/health")
     def health() -> dict[str, str]:

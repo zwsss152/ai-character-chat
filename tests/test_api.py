@@ -89,3 +89,27 @@ def test_api_docs_and_schema_are_available(client):
     assert client.get("/docs").status_code == 200
     schema = client.get("/openapi.json").json()
     assert "/api/chat" in schema["paths"]
+
+
+def test_home_serves_the_web_client(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/html")
+    assert 'lang="zh-CN"' in response.text
+    assert '/assets/app.js' in response.text
+    assert 'id="chat-form"' in response.text
+
+
+@pytest.mark.parametrize(
+    "path, content_type",
+    [("app.js", "javascript"), ("styles.css", "text/css")],
+)
+def test_web_assets_are_served(client, path, content_type):
+    response = client.get(f"/assets/{path}")
+    assert response.status_code == 200
+    assert content_type in response.headers["content-type"]
+
+
+def test_web_assets_do_not_expose_other_package_files(client):
+    assert client.get("/assets/%2e%2e/characters.py").status_code == 404
+    assert client.get("/assets/missing.js").status_code == 404
