@@ -2,11 +2,14 @@ import pytest
 from fastapi.testclient import TestClient
 
 from ai_character_chat.app import create_app
+from ai_character_chat.providers import GenerationResult
+from ai_character_chat.settings import Settings
 
 
 @pytest.fixture
-def client():
-    with TestClient(create_app()) as test_client:
+def client(tmp_path):
+    settings = Settings(database_path=str(tmp_path / "chat.sqlite3"))
+    with TestClient(create_app(settings=settings)) as test_client:
         yield test_client
 
 
@@ -69,14 +72,19 @@ def test_input_trims_outer_whitespace_but_keeps_internal_text(client):
     assert response.json()["reply"] == "[离线模拟｜露米] 收到：第一行\n第二行"
 
 
-def test_provider_can_be_replaced_without_changing_routes():
+def test_provider_can_be_replaced_without_changing_routes(tmp_path):
     class ExampleProvider:
         mode = "test"
 
-        def generate(self, character, message):
-            return f"{character.id}:{message}"
+        def generate(self, request):
+            return GenerationResult(
+                reply=f"{request.character.id}:{request.messages[-1].content}",
+                mode=self.mode,
+                model="example",
+            )
 
-    with TestClient(create_app(provider=ExampleProvider())) as client:
+    settings = Settings(database_path=str(tmp_path / "chat.sqlite3"))
+    with TestClient(create_app(provider=ExampleProvider(), settings=settings)) as client:
         response = client.post(
             "/api/chat", json={"character_id": "lumi", "message": "adapter"}
         )

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ai-character-chat"
-version = "0.2.0"
+version = "0.3.0"
 description = "A learning scaffold for an open-source AI character chat system."
 readme = "README.md"
 requires-python = ">=3.13"
@@ -14,10 +14,11 @@ dependencies = [
     "fastapi>=0.115,<1",
     "pydantic>=2.10,<3",
     "uvicorn>=0.30,<1",
+    "httpx>=0.27,<1",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<10", "httpx>=0.27,<1"]
+dev = ["pytest>=8,<10", "build>=1,<2"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
