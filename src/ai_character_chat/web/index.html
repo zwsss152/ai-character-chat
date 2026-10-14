@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="原创角色对话项目，当前使用离线模拟回复。">
+  <meta name="description" content="原创角色对话项目，支持多轮会话与本地调用追踪。">
   <title>星间档案 · Character Chat</title>
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/app.js" defer></script>
@@ -15,20 +15,30 @@
       <div class="section-label">对话角色 <span id="character-count">—</span></div>
       <div id="characters" class="character-list" aria-label="选择角色"></div>
       <button id="reload" class="quiet-button" type="button">重新加载角色</button>
+      <div class="section-label session-heading">保存的会话 <span id="session-count">—</span></div>
+      <button id="new-session" class="quiet-button" type="button" disabled>＋ 新建会话</button>
+      <div id="sessions" class="session-list" aria-label="选择已保存的会话"></div>
       <div class="sidebar-footer"><span class="mode-dot" aria-hidden="true"></span><span id="mode">正在检查服务</span><a href="/docs" target="_blank" rel="noopener">API ↗</a></div>
     </aside>
     <main class="main">
-      <header class="chat-header"><div><div class="eyebrow">空中图书馆 / 对话室</div><h1 id="character-name">选择一位角色</h1></div><button id="clear" class="quiet-button" type="button" disabled>清空对话</button></header>
+      <header class="chat-header"><div><div class="eyebrow">空中图书馆 / 对话室</div><h1 id="character-name">选择一位角色</h1><p id="session-info" class="session-info">尚未选择会话</p></div><button id="delete-session" class="quiet-button" type="button" disabled>删除会话</button></header>
       <section class="character-intro" aria-label="角色资料"><span class="intro-symbol" aria-hidden="true">✦</span><p id="persona">角色资料加载后会显示在这里。</p></section>
       <div id="messages" class="messages" role="log" aria-label="对话记录" aria-live="polite" aria-relevant="additions"></div>
       <div class="composer-area">
+        <details id="trace-panel" class="trace-panel">
+          <summary>本地开发 · 模型调用追踪</summary>
+          <div class="trace-controls"><label for="trace-select">选择调用</label><select id="trace-select" disabled><option value="">暂无调用记录</option></select><button id="trace-reload" class="quiet-button" type="button" disabled>刷新追踪</button></div>
+          <p id="trace-summary" class="trace-summary">发送消息后，可检查实际角色设定与对话上下文。</p>
+          <pre id="trace-content" class="trace-content" tabindex="0" aria-label="模型实际输入及调用结果"></pre>
+          <p class="trace-note">追踪包含完整对话文字，保存在本机；分享前请检查其中的个人信息。</p>
+        </details>
         <p id="status" class="status" role="status">正在加载角色…</p>
         <form id="chat-form" class="composer">
           <label class="sr-only" for="message">发送消息</label>
           <textarea id="message" name="message" rows="2" placeholder="从一句你好开始…" disabled></textarea>
           <div class="composer-bottom"><span id="counter">0 / 2000</span><button id="send" type="submit" disabled>发送 <span aria-hidden="true">↗</span></button></div>
         </form>
-        <p class="boundary">当前回复为离线模拟。对话只保留在本页，不会作为模型上下文；刷新后清空。</p>
+        <p id="boundary" class="boundary">正在检查回复模式。会话保存在本机；持久记录不等于角色长期记忆。</p>
       </div>
     </main>
   </div>

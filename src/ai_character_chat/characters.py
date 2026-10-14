@@ -13,6 +13,22 @@ class Character(BaseModel):
     name: str = Field(min_length=1)
     persona: str = Field(min_length=1)
     greeting: str = Field(min_length=1)
+    schema_version: int = Field(default=1, ge=1, le=1)
+    identity_facts: list[str] = Field(default_factory=list)
+    values: list[str] = Field(default_factory=list)
+    speaking_style: str = ""
+    knowledge_boundary: list[str] = Field(default_factory=list)
+    dialogue_examples: list["DialogueExample"] = Field(default_factory=list)
+
+
+class DialogueExample(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    user: str = Field(min_length=1)
+    reply: str = Field(min_length=1)
+
+
+Character.model_rebuild()
 
 
 def load_characters() -> dict[str, Character]:
